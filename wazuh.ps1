@@ -7,6 +7,8 @@ Start-Sleep -Seconds 3
 Invoke-WebRequest -Uri https://packages.wazuh.com/4.x/windows/wazuh-agent-4.11.2-1.msi -OutFile $env:tmp\wazuh-agent; msiexec.exe /i $env:tmp\wazuh-agent /q WAZUH_MANAGER='182.23.30.24'
 
 Start-Sleep -Seconds 3
+NET START WazuhSvc
+Start-Sleep -Seconds 5
 
 # Script untuk update konfig Wazuh
 (Get-Content "C:\Program Files (x86)\ossec-agent\internal_options.conf") -replace '^(logcollector\.remote_commands\s*=\s*)0', '${1}1' -replace '^(wazuh_command\.remote_commands\s*=\s*)0', '${1}1' | Set-Content "C:\Program Files (x86)\ossec-agent\internal_options.conf" -Encoding UTF8
